@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 // const { precacheAndRoute } = workbox.precaching;
 // const { registerRoute } = workbox.routing;
 // const { CacheFirst, StaleWhileRevalidate } = workbox.strategies;
@@ -11,6 +13,15 @@ import {  ExpirationPlugin } from "workbox-expiration";
 import {  CacheableResponsePlugin } from "workbox-cacheable-response";
 import {  setCacheNameDetails} from "workbox-core";
 
+
+const assets = [
+    '/',
+    '/index.html',
+    // '/js/*',
+    // '/css/*'
+];
+
+
 setCacheNameDetails({ prefix: "appname" });
 
 self.addEventListener("message", (event) => {
@@ -18,7 +29,6 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
-
 
 // self.__precacheManifest = [].concat(self.__precacheManifest || []);
 precacheAndRoute(self.__WB_MANIFEST);
@@ -39,6 +49,23 @@ registerRoute(
     ],
   })
 );
+
+// install sw
+self.addEventListener('install', evt => {
+    // console.log('service worker has been installed');
+    evt.waitUntil(
+        caches.open('assets').then(cache => {
+            console.log('catching shell assets');
+            return cache.addAll(assets);
+        })
+    )
+})
+
+// fetch event
+self.addEventListener('fetch', evt => {
+    console.log('fetch event'), evt;
+});
+
 
 // Get response from Workbox API (?) (?)
 registerRoute(
