@@ -9,7 +9,7 @@ module.exports = defineConfig({
     appleMobileWebAppStatusBarStyle: "#fff3e0",
     workboxPluginMode: "InjectManifest",
     workboxOptions: {
-      swSrc: "./service-worker.js",
+      swSrc: "./src/service-worker.js",
       exclude: [/_redirect/, /\.map$/, /_headers/],
     },
     manifestOptions: {
